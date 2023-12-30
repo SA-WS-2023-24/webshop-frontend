@@ -1,5 +1,5 @@
 import React from "react";
-import { baseStyles } from "./BaseComponent";
+import Button from "./Button";
 
 const styles = {
     navItem: {
@@ -8,18 +8,11 @@ const styles = {
 };
 
 const NavbarButton = ({ text, link }) => {
-    return (
-        <button
-            style={{
-                ...baseStyles.baseContainer,
-                ...baseStyles.basePadding,
-                ...styles.navItem,
-            }}
-            onClick={() => (window.location.href = link)}
-        >
-            {text}
-        </button>
-    );
+    const handleClick = () => {
+        window.location.href = link;
+    };
+
+    return <Button onClick={handleClick} text={text} style={styles.navItem} />;
 };
 
 export default NavbarButton;

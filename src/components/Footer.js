@@ -1,21 +1,21 @@
 import React from "react";
+import BaseComponent from "./BaseComponent";
+import { baseStyles } from "./BaseComponent";
 
 const styles = {
-    footer: {
-        textAlign: "center",
-        backgroundColor: "#282828",
-        border: "2px solid #E78A4F",
-        color: "#E78A4F",
-        padding: "1rem",
-        margin: "1rem",
+    style: {
+        ...baseStyles.baseContainer,
+        ...baseStyles.baseMargin,
     },
 };
 
 const Footer = () => {
     return (
-        <footer>
-            <p>© 2020 WebShop</p>
-        </footer>
+        <BaseComponent style={styles.style}>
+            <footer>
+                <p>© 2020 WebShop</p>
+            </footer>
+        </BaseComponent>
     );
 };
 

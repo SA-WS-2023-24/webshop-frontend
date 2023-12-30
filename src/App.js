@@ -1,18 +1,17 @@
 import React from "react";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import PageLayout from "./pages/PageLayout";
 import BaseComponent from "./components/BaseComponent";
+import Button from "./components/Button";
 
 function App() {
     return (
-        <div className="container">
+        <PageLayout>
             <BaseComponent>
-                <Header />
+                <h1>My Website</h1>
+                <p>This is my website.</p>
+                <Button text="Click me!" />
             </BaseComponent>
-            <BaseComponent>
-                <Footer />
-            </BaseComponent>
-        </div>
+        </PageLayout>
     );
 }
 

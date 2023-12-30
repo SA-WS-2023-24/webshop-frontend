@@ -5,8 +5,14 @@ export const baseStyles = {
     baseContainer: {
         textAlign: "center",
         backgroundColor: colors.background,
-        border: "2px solid {colors.primaryAccent}",
+        border: `2px solid ${colors.primaryAccent}`,
         color: colors.primaryAccent,
+    },
+    baseContainerInverted: {
+        textAlign: "center",
+        backgroundColor: colors.primaryAccent,
+        border: `2px solid ${colors.primaryAccent}`,
+        color: colors.background,
     },
     basePadding: {
         padding: "1rem",
@@ -16,18 +22,8 @@ export const baseStyles = {
     },
 };
 
-const BaseComponent = ({ children }) => {
-    return (
-        <div
-            style={{
-                ...baseStyles.baseContainer,
-                // ...baseStyles.basePadding,
-                ...baseStyles.baseMargin,
-            }}
-        >
-            {children}
-        </div>
-    );
+const BaseComponent = ({ children, style }) => {
+    return <div style={style}>{children}</div>;
 };
 
 export default BaseComponent;

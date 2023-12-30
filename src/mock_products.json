@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "name": "Product 1",
+        "price": 100,
+        "image": "url_to_image_1",
+        "rating": 4.5
+    },
+    {
+        "id": 2,
+        "name": "Product 2",
+        "price": 200,
+        "image": "url_to_image_2",
+        "rating": 4.0
+    }
+]
