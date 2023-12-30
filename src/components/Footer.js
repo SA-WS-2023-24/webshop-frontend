@@ -13,7 +13,7 @@ const Footer = () => {
     return (
         <BaseComponent style={styles.style}>
             <footer>
-                <p>© 2020 WebShop</p>
+                <p>© 2023 WebShop</p>
             </footer>
         </BaseComponent>
     );
