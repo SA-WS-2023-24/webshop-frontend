@@ -1,18 +1,12 @@
 import React from "react";
 import Button from "./Button";
 
-const styles = {
-    navItem: {
-        margin: "-2px",
-    },
-};
-
-const NavbarButton = ({ text, link }) => {
+const NavbarButton = ({ text, link, style }) => {
     const handleClick = () => {
         window.location.href = link;
     };
 
-    return <Button onClick={handleClick} text={text} style={styles.navItem} />;
+    return <Button onClick={handleClick} text={text} style={style} />;
 };
 
 export default NavbarButton;

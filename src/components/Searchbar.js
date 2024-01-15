@@ -11,7 +11,7 @@ import SearchField from "./SearchField";
 const styles = {
     navContainer: {
         display: "flex",
-        justifyContent: "space-between",
+        // justifyContent: "space-between",
     },
     style: {
         ...baseStyles.baseContainer,
@@ -23,9 +23,13 @@ const styles = {
         paddingLeft: "2rem",
         paddingRight: "2rem",
     },
+    search: {
+        display: "flex",
+        flexGrow: 1,
+    },
 };
 
-const Navbar = ({ setSearching }) => {
+const Searchbar = () => {
     return (
         <BaseComponent style={styles.style}>
             <header>
@@ -35,28 +39,14 @@ const Navbar = ({ setSearching }) => {
                         link="/"
                         style={styles.navItem}
                     />
-                    <div>
-                        <NavbarButton
-                            text="Products"
-                            link="/products"
-                            style={styles.navItem}
-                        />
-                        <NavbarButton
-                            text="Prebuilts"
-                            link="/prebuilts"
-                            style={styles.navItem}
-                        />
-                        <NavbarButton
-                            text="Configurator"
-                            link="/configurator"
-                            style={styles.navItem}
-                        />
+                    <div style={styles.search}>
                         <SearchField
                             placeholder="Search..."
                             // onSearch={alert("Search")}
-                            style={styles.navItem}
-                            onClick={() => setSearching(true)}
+                            style={{ ...styles.navItem, flexGrow: 1 }}
                         />
+                    </div>
+                    <div>
                         <NavbarButton
                             text=<FontAwesomeIcon icon={faShoppingCart} />
                             link="/cart"
@@ -79,4 +69,4 @@ const Navbar = ({ setSearching }) => {
     );
 };
 
-export default Navbar;
+export default Searchbar;
