@@ -1,0 +1,22 @@
+apiVersion: skaffold/v4beta8
+kind: Config
+metadata:
+  name: webshop-frontend
+build:
+  artifacts:
+    - image: sa/react-app
+      sync:
+        infer:
+          - '**/*.js'
+          - '**/*.css'
+          - '**/*.jsx'
+      docker:
+        dockerfile: Dockerfile
+manifests:
+  rawYaml:
+    - k8s/react-deployment.yaml
+    - k8s/react-service.yaml
+portForward:
+  - resourceType: deployment
+    resourceName: react-app
+    port: 3000

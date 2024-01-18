@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          # Docker Image
+          image: pcpartsshop/frontend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            #the port on which the app can be reached out inside the container
+            - containerPort: 3000
