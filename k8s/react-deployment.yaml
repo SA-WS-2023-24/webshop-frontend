@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: react-app
+  name: frontend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: react-app
+      app: frontend
   template:
     metadata:
       labels:
-        app: react-app
+        app: frontend
     spec:
       containers:
-        - name: react-app
+        - name: frontend
           # Docker Image
-          image: sa/react-app:latest
+          image: pcpartsshop/frontend:latest
           imagePullPolicy: IfNotPresent
           ports:
             #the port on which the app can be reached out inside the container
