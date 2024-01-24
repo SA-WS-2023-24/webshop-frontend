@@ -6,6 +6,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material'
 import theme from './theme'
 import ErrorPage from './routes/ErrorPage'
 import HomePage from './routes/HomePage'
+import LoginPage from './routes/LoginPage'
 
 const router = createBrowserRouter([
     {
@@ -18,7 +19,11 @@ const router = createBrowserRouter([
                 element: <HomePage />
             }
         ]
-    }
+    },
+    {
+        path: "/login",
+        element: <LoginPage />
+    },
 
 ])
 
