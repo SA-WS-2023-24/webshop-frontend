@@ -9,6 +9,7 @@ import HomePage from './routes/HomePage'
 import LoginPage from './routes/LoginPage'
 import SignUpPage from './routes/SignUpPage'
 import ProductsPage from './routes/ProductsPage'
+import CheckoutPage from './routes/CheckoutPage'
 
 // The router to specify our routes
 const router = createBrowserRouter([
@@ -43,7 +44,11 @@ const router = createBrowserRouter([
     {
         path: "/signup",
         element: <SignUpPage />
-      }
+    },
+    {
+        path: "/checkout",
+        element: <CheckoutPage />,
+    },
 
 ])
 
