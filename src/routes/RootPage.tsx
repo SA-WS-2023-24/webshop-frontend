@@ -1,3 +1,5 @@
+import { Outlet } from "react-router";
+import NavigationBar from "../components/main/NavigationBar";
 
 /**
  * This page contains only the navigation bar and footer, and allows other
@@ -5,6 +7,9 @@
  */
 export default function RootPage() {
     return (
-        <p>Empty Page</p>
+        <div>
+            <NavigationBar />
+            <Outlet />
+        </div>
     );
 }
