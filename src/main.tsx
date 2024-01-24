@@ -8,17 +8,32 @@ import ErrorPage from './routes/ErrorPage'
 import HomePage from './routes/HomePage'
 import LoginPage from './routes/LoginPage'
 import SignUpPage from './routes/SignUpPage'
+import ProductsPage from './routes/ProductsPage'
 
+// The router to specify our routes
 const router = createBrowserRouter([
     {
         path: "/",
         element: <RootPage />,
-        errorElement: <ErrorPage />,
+        errorElement: <ErrorPage />,    // shown when url doesn't match any route
         children: [
             {
+                /* 
+                    The following line is needed to insert the home page into 
+                    the <Outlet /> of the route page without specifying a route
+                    other than '/'.
+
+                    Otherwise you would only see the navigation bar and the
+                    footer when enering 'www.shop.com as' url, which is not what
+                    we want.
+                */
                 index: true,
                 element: <HomePage />
-            }
+            },
+            {
+                path: "/products",
+                element: <ProductsPage />,
+              }
         ]
     },
     {
