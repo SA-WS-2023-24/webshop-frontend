@@ -7,6 +7,7 @@ import theme from './theme'
 import ErrorPage from './routes/ErrorPage'
 import HomePage from './routes/HomePage'
 import LoginPage from './routes/LoginPage'
+import SignUpPage from './routes/SignUpPage'
 
 const router = createBrowserRouter([
     {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
         path: "/login",
         element: <LoginPage />
     },
+    {
+        path: "/signup",
+        element: <SignUpPage />
+      }
 
 ])
 
