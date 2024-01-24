@@ -4,11 +4,13 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import RootPage from './routes/RootPage'
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import theme from './theme'
+import ErrorPage from './routes/ErrorPage'
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <RootPage />,
+        errorElement: <ErrorPage />,
     }
 
 ])
