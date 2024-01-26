@@ -1,7 +1,6 @@
 import { Box, Grid } from "@mui/material";
 import ProductCard from "../components/products/ProductCard";
-import { json, useLoaderData } from "react-router";
-import { redirect } from "react-router-dom";
+import { useLoaderData } from "react-router";
 //import { useEffect, useState } from "react";
 
 export interface Product {

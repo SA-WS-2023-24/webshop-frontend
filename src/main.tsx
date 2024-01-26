@@ -11,6 +11,7 @@ import SignUpPage from './routes/SignUpPage'
 import ProductsPage, { loader as productsLoader } from './routes/ProductsPage'
 import CheckoutPage from './routes/CheckoutPage'
 import ProductDetailsPage, { loader as productDetailsLoader } from './routes/ProductDetailsPage'
+import BasketPage, { loader as basketLoader } from './routes/BasketPage'
 
 // The router to specify our routes
 const router = createBrowserRouter([
@@ -41,6 +42,11 @@ const router = createBrowserRouter([
                 path: "/products/:productId",
                 element: <ProductDetailsPage />,
                 loader: productDetailsLoader,
+            },
+            {
+                path: "/basket/:basketId",
+                element: <BasketPage />,
+                loader: basketLoader,
             },
         ]
     },

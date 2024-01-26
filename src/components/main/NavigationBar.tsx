@@ -1,10 +1,10 @@
-import { AppBar, Box, Divider, IconButton, InputBase, Menu, MenuItem, Toolbar, Typography, alpha, styled } from "@mui/material";
+import { AppBar, Box, Divider, IconButton, InputBase, Link, Menu, MenuItem, Toolbar, Typography, alpha, styled } from "@mui/material";
 import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PersonIcon from '@mui/icons-material/Person';
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { useState } from "react";
 
 const Search = styled('div')(({ theme }) => ({
@@ -57,8 +57,6 @@ const contentBoxStyle = {
     },
 }
 
-
-
 export default function NavigationBar() {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -91,7 +89,12 @@ export default function NavigationBar() {
                     </Box>
                     <BlackDevider />
                     <Box sx={{ pl: 2 }}>
-                        <Link to={``}>
+                        <Link
+                            component={RouterLink}
+                            to={`prodcts`}
+                            underline="none"
+                            sx={{ color: 'inherit' }}
+                        >
                             <Typography variant="h4" color="inherit" noWrap>
                                 PcPartsShop
                             </Typography>
@@ -100,7 +103,12 @@ export default function NavigationBar() {
                 </Box>
 
                 <BlackDevider />
-                <Link to={`products`}>
+                <Link
+                    component={RouterLink}
+                    to={`products`}
+                    underline="none"
+                    sx={{ color: 'inherit' }}
+                >
                     <Box sx={contentBoxStyle}>
                         <Typography variant="h4" color="inherit" noWrap>
                             PRODUCTS
@@ -137,7 +145,13 @@ export default function NavigationBar() {
                         size="large"
                         color="inherit"
                     >
-                        <Link to={`wishlist`}><BookmarkIcon /></Link>
+                        <Link
+                            component={RouterLink}
+                            to={`wishlist`}
+                            sx={{ color: 'inherit' }}
+                        >
+                            <BookmarkIcon />
+                        </Link>
                     </IconButton>
                 </Box>
 
@@ -148,7 +162,13 @@ export default function NavigationBar() {
                         size="large"
                         color="inherit"
                     >
-                        <Link to={`basket`}><ShoppingCartIcon /></Link>
+                        <Link
+                            component={RouterLink}
+                            to={`basket`}
+                            sx={{ color: 'inherit' }}
+                        >
+                            <ShoppingCartIcon />
+                        </Link>
                     </IconButton>
                 </Box>
                 <BlackDevider />
@@ -170,8 +190,16 @@ export default function NavigationBar() {
                             'aria-labelledby': 'basic-button',
                         }}
                     >
-                        <Link to={`login`}><MenuItem>Login</MenuItem></Link>
-                        <Link to={`signup`}><MenuItem>Sign Up</MenuItem></Link>
+                        <Link
+                            component={RouterLink}
+                            to={`login`}
+                            sx={{ color: 'inherit' }}
+                        ><MenuItem>Login</MenuItem></Link>
+                        <Link
+                            component={RouterLink}
+                            to={`signup`}
+                            sx={{ color: 'inherit' }}
+                        ><MenuItem>Sign Up</MenuItem></Link>
                     </Menu>
                 </Box>
             </Toolbar>
