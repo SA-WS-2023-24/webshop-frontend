@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Product } from "../../routes/ProductsPage";
+import { Link } from "react-router-dom";
 
 interface ProductCardProps {
   product: Product;
@@ -25,9 +26,11 @@ export default function ProductCard({ product }: ProductCardProps) {
           />
         </div>
         <CardContent>
+          <Link to={`${product.id}`}>
           <Typography variant="h5" gutterBottom>
             {product.name}
           </Typography>
+          </Link>
           <Rating value={product.rating} readOnly precision={0.1} />
           <Typography variant="h5" color="inherit">
             {`${product.price.toFixed(2)} EUR`}

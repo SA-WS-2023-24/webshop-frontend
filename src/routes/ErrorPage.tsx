@@ -1,8 +1,13 @@
+import { useRouteError } from "react-router-dom";
+
 /**
  * This error page is displayed whenever an incorrect route is called up.
  * Example: www.our-shop.com/wrong/route
  */
 export default function ErrorPage() {
+
+    const error = useRouteError();
+    console.error(error);
 
     return (
         <div style={{
