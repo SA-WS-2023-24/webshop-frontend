@@ -11,7 +11,7 @@ import SignUpPage from './routes/SignUpPage'
 import ProductsPage, { loader as productsLoader } from './routes/ProductsPage'
 import CheckoutPage from './routes/CheckoutPage'
 import ProductDetailsPage, { loader as productDetailsLoader } from './routes/ProductDetailsPage'
-import BasketPage, { loader as basketLoader } from './routes/BasketPage'
+import BasketPage from './routes/BasketPage'
 
 // The router to specify our routes
 const router = createBrowserRouter([
@@ -34,19 +34,23 @@ const router = createBrowserRouter([
                 element: <HomePage />
             },
             {
-                path: "/products",
-                element: <ProductsPage />,
-                loader: productsLoader,
-            },
-            {
                 path: "/products/:productId",
                 element: <ProductDetailsPage />,
                 loader: productDetailsLoader,
             },
             {
-                path: "/basket/:basketId",
+                path: "/products/filter/:category",
+                element: <ProductsPage />,
+                loader: productsLoader,
+            },
+            {
+                path: "/products",
+                element: <ProductsPage />,
+                loader: productsLoader,
+            },
+            {
+                path: "/basket",
                 element: <BasketPage />,
-                loader: basketLoader,
             },
         ]
     },

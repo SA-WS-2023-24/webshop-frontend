@@ -1,11 +1,12 @@
-import { AppBar, Box, Divider, IconButton, InputBase, Link, Menu, MenuItem, Toolbar, Typography, alpha, styled } from "@mui/material";
-import HomeIcon from '@mui/icons-material/Home';
+import { AppBar, Badge, Box, IconButton, InputBase, Link, Menu, MenuItem, Toolbar, Typography, alpha, styled } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PersonIcon from '@mui/icons-material/Person';
 import { Link as RouterLink } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { SessionContext } from "../../context/SessionContext";
+import Devider from "./Divider";
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -40,16 +41,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     }
 }));
 
-function BlackDevider() {
-    return (
-        <Divider orientation='vertical' flexItem sx={{ borderRight: 8, color: 'black' }} />
-    );
-}
-
 const contentBoxStyle = {
     height: 64,
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
     pr: 2,
     pl: 2,
     '&:hover': {
@@ -58,6 +54,7 @@ const contentBoxStyle = {
 }
 
 export default function NavigationBar() {
+    const session = useContext(SessionContext)
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -77,57 +74,69 @@ export default function NavigationBar() {
                 borderBottom: 8,
             }}>
             <Toolbar style={{ paddingRight: 0, paddingLeft: 0 }}>
-                <Box sx={contentBoxStyle}>
-
-                    <Box sx={{ pr: 2 }}>
-                        <IconButton
-                            size="large"
-                            color="inherit"
+                <Link
+                    component={RouterLink}
+                    to={`/`}
+                    underline="none"
+                    sx={{ color: 'inherit' }}
+                >
+                    <Box sx={{ ...contentBoxStyle, width: 280 }}>
+                        <img
+                            src="/mainboard.svg"
+                            alt="Logo"
+                            height="50px"
+                            style={{
+                                marginRight: "10px"
+                            }}
                         >
-                            <HomeIcon />
-                        </IconButton>
-                    </Box>
-                    <BlackDevider />
-                    <Box sx={{ pl: 2 }}>
-                        <Link
-                            component={RouterLink}
-                            to={`prodcts`}
-                            underline="none"
-                            sx={{ color: 'inherit' }}
-                        >
-                            <Typography variant="h4" color="inherit" noWrap>
-                                PcPartsShop
-                            </Typography>
-                        </Link>
-                    </Box>
-                </Box>
+                        </img>
+                        <Typography variant="h4" color="inherit" noWrap>
+                            PcPartsShop
+                        </Typography>
 
-                <BlackDevider />
+                    </Box>
+                </Link>
+
+                <Devider />
                 <Link
                     component={RouterLink}
                     to={`products`}
                     underline="none"
                     sx={{ color: 'inherit' }}
                 >
-                    <Box sx={contentBoxStyle}>
+                    <Box sx={contentBoxStyle} width={180}>
                         <Typography variant="h4" color="inherit" noWrap>
                             PRODUCTS
                         </Typography>
                     </Box>
                 </Link>
-                <BlackDevider />
-                <Box sx={contentBoxStyle}>
-                    <Typography variant="h4" color="inherit" noWrap>
-                        PREBUILTS
-                    </Typography>
-                </Box>
-                <BlackDevider />
-                <Box sx={contentBoxStyle}>
-                    <Typography variant="h4" color="inherit" noWrap>
-                        BUILD KITS
-                    </Typography>
-                </Box>
-                <BlackDevider />
+                <Devider />
+                <Link
+                    component={RouterLink}
+                    to={`/products`}
+                    underline="none"
+                    sx={{ color: 'inherit' }}
+                >
+                    <Box sx={contentBoxStyle}>
+                        <Typography variant="h4" color="inherit" noWrap>
+                            PREBUILTS
+                        </Typography>
+                    </Box>
+                </Link>
+                <Devider />
+                <Link
+                    component={RouterLink}
+                    to={`/products`}
+                    underline="none"
+                    sx={{ color: 'inherit' }}
+                >
+                    <Box sx={contentBoxStyle}>
+                        <Typography variant="h4" color="inherit" noWrap>
+                            BUILD KITS
+                        </Typography>
+                    </Box>
+                </Link>
+                <Devider />
                 <Search sx={{ flexGrow: 1 }}>
                     <SearchIconWrapper>
                         <SearchIcon />
@@ -138,40 +147,34 @@ export default function NavigationBar() {
                         inputProps={{ 'aria-label': 'search' }}
                     />
                 </Search>
-                <BlackDevider />
-                <Box sx={contentBoxStyle}>
-                    <IconButton
-                        disableRipple
-                        size="large"
-                        color="inherit"
-                    >
-                        <Link
-                            component={RouterLink}
-                            to={`wishlist`}
-                            sx={{ color: 'inherit' }}
-                        >
-                            <BookmarkIcon />
-                        </Link>
-                    </IconButton>
-                </Box>
+                <Devider />
+                <Link
+                    component={RouterLink}
+                    to={`wishlist`}
+                    sx={{ color: 'inherit' }}
+                >
+                    <Box sx={contentBoxStyle}>
+                        <BookmarkIcon />
+                    </Box>
+                </Link>
 
-                <BlackDevider />
-                <Box sx={contentBoxStyle}>
-                    <IconButton
-                        disableRipple={true}
-                        size="large"
-                        color="inherit"
-                    >
-                        <Link
-                            component={RouterLink}
-                            to={`basket`}
-                            sx={{ color: 'inherit' }}
-                        >
+                <Devider />
+                <Link
+                    component={RouterLink}
+                    to={`basket`}
+                    sx={{ color: 'inherit' }}
+                >
+                    <Box sx={contentBoxStyle}>
+                        {(session.getCartItemCount() < 1) ? (
                             <ShoppingCartIcon />
-                        </Link>
-                    </IconButton>
-                </Box>
-                <BlackDevider />
+                        ) : (
+                            <Badge badgeContent={session.getCartItemCount()} color="error">
+                                <ShoppingCartIcon />
+                            </Badge>
+                        )}
+                    </Box>
+                </Link>
+                <Devider />
                 <Box sx={contentBoxStyle}>
                     <IconButton
                         disableRipple={true}

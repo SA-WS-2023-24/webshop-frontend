@@ -1,5 +1,7 @@
 import { Outlet } from "react-router";
 import NavigationBar from "../components/main/NavigationBar";
+import SessionContextProvider from "../context/SessionContext";
+import Footer from "../components/main/Footer";
 
 /**
  * This page contains only the navigation bar and footer, and allows other
@@ -7,9 +9,21 @@ import NavigationBar from "../components/main/NavigationBar";
  */
 export default function RootPage() {
     return (
-        <div>
-            <NavigationBar />
-            <Outlet />
+        <div style={{
+            height: "100vh",
+            display: "flex",
+            flexDirection: "column"
+        }}>
+            <SessionContextProvider>
+                <NavigationBar />
+                <div style={{
+                    display: "flex",
+                    flex: 1
+                }}>
+                    <Outlet />
+                </div>
+                <Footer />
+            </SessionContextProvider>
         </div>
     );
 }
