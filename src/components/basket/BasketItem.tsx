@@ -1,8 +1,10 @@
-import { Box, Typography, styled } from "@mui/material"
+import { Box, Button, Typography, styled } from "@mui/material"
 import DeleteIcon from '@mui/icons-material/Delete';
 import theme from "../../theme";
-import { Button, buttonClasses } from "@mui/base";
+import { buttonClasses } from "@mui/base";
 import { BasketItem as BasketItemProps } from "../../routes/BasketPage";
+import { useContext } from "react";
+import { SessionContext } from "../../context/SessionContext";
 
 const DeleteButton = styled(Button)`
 	background-color: ${theme.palette.primary.main};
@@ -25,7 +27,13 @@ const DeleteButton = styled(Button)`
 	}
 `;
 
-export default function BasketItem({ name, imgLink, description, price, quantity }: BasketItemProps) {
+interface BasketItemCallbacks {
+    onUpdate: (basketId: string, productId: string) => void
+    onDelete: (basketId: string, productId: string) => void
+}
+
+export default function BasketItem({ productId ,name, imgLink, description, price, quantity, onUpdate, onDelete }: BasketItemProps & BasketItemCallbacks) {
+    const session = useContext(SessionContext);
 
     return (
         <Box sx={{
@@ -93,7 +101,9 @@ export default function BasketItem({ name, imgLink, description, price, quantity
                     variant="h4"
                     sx={{ marginRight: "20px" }}
                 >{price.toFixed(2)} EUR</Typography>
-                <DeleteButton>
+                <DeleteButton
+                    onClick={() => onDelete(session.getSessionId(), productId)}
+                >
                     <DeleteIcon />
                 </DeleteButton>
             </div>

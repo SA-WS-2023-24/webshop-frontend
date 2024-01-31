@@ -6,7 +6,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import { Link as RouterLink } from "react-router-dom";
 import { useContext, useState } from "react";
 import { SessionContext } from "../../context/SessionContext";
-import Devider from "./Divider";
+import { VerticalBorderDivider as Devider } from "./Divider";
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',

@@ -1,5 +1,5 @@
 import { Basket, BasketItem } from "../routes/BasketPage";
-import { makeAddProductToBasketURL, makeCreateBasketURL, makeGetBasketItemsURL, makeGetBasketURL } from "./urls";
+import { makeAddProductToBasketURL, makeCreateBasketURL, makeGetBasketItemsURL, makeGetBasketURL, makeRemoveProductFromBasketURL } from "./urls";
 
 interface PostProductToBasketRequestProps {
     data: null | {}
@@ -17,6 +17,49 @@ export function postProductToBasketRequest(basketId: string, productId: string):
         body: JSON.stringify({
             productId: productId,
             quantity: 1
+        })
+    })
+        .then(response => {
+            if (response.status === 404) {
+                throw Error("No Data Found");
+            }
+            if (response.status === 500) {
+                throw Error("Server Error");
+            }
+            if (!response.ok) {
+                throw Error("Error Fetching Data");
+            }
+            return {}
+        })
+        .then(data => {
+            return { data: data, error: null };
+        })
+        .catch(err => {
+            console.log(`Got an error while posting to URL: ${url}: ${err}`)
+            return { data: null, error: err }
+        })
+    return respone;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+interface PostRemoveProductFromBasketRequestProps {
+    data: null | {}
+    error: null | Error
+}
+
+export function postRemoveProductFromBasketRequest(basketId: string, productId: string): Promise<PostRemoveProductFromBasketRequestProps> {
+    const url = makeRemoveProductFromBasketURL(basketId)
+    console.log(`posted product to basket with URL: ${url}`)
+    const respone = fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            productId: productId
         })
     })
         .then(response => {

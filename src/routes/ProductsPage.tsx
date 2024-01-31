@@ -2,7 +2,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import ProductCard from "../components/products/ProductCard";
 import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
 import FilterList from "../components/products/FilterList";
-import Devider from "../components/main/Divider";
+import { VerticalBorderDivider } from "../components/main/Divider";
 //import { useEffect, useState } from "react";
 
 export interface Product {
@@ -82,7 +82,7 @@ export default function ProductsPage() {
 				<FilterList selectedCategory={category}/>
 			</div>
 
-			<Devider />
+			<VerticalBorderDivider />
 
 			<Box
 				sx={{
