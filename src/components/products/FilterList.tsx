@@ -2,11 +2,16 @@ import { Checkbox, List, ListItem, ListItemButton, ListItemIcon, Typography } fr
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function FilterList() {
+interface FilterListProps {
+    selectedCategory: string
+}
+
+
+export default function FilterList({ selectedCategory }: FilterListProps) {
     const navigate = useNavigate();
-    const [checked, setChecked] = useState<string>("");
+    const [checked, setChecked] = useState<string>(selectedCategory.toUpperCase());
     const values: string[] = ["VIDEOCARD", "CPU", "CASE", "MOTHERBOARD", "RAM",
-        "STORAGE", "COOLING", "PERIPHERAL", "POWER SUPPLY"]
+        "STORAGE", "COOLING", "PERIPHERAL", "POWER_SUPPLY"]
 
     function handleChange(selection: string): void {
         if (selection === checked) {
@@ -39,7 +44,7 @@ export default function FilterList() {
                                     inputProps={{ 'aria-labelledby': labelId }}
                                 />
                             </ListItemIcon>
-                            <Typography variant="h6">{value}</Typography>
+                            <Typography variant="h6">{value.replace(/_/g, ' ')}</Typography>
                         </ListItemButton>
                     </ListItem>
                 );

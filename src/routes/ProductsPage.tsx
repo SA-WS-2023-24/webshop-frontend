@@ -25,7 +25,7 @@ async function requestAllProducts() {
 			return response.json();
 		})
 		.then((data) => {
-			return data;
+			return {products: data, category: ""};
 		})
 		.catch((error) => {
 			console.error("error fetching products: ", error);
@@ -43,7 +43,7 @@ async function requestProductsFromCategory(category: string) {
 			return response.json();
 		})
 		.then((data) => {
-			return data;
+			return {products: data, category: category};
 		})
 		.catch((error) => {
 			console.error("error fetching products: ", error);
@@ -61,11 +61,12 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 }
 
 export default function ProductsPage() {
-	const products = useLoaderData() as Product[];
+	const {products, category} = useLoaderData() as {products: Product[], category: string}
 
 	return (
 		<div style={{
 			display: "flex",
+			flexGrow: 1
 		}}>
 			<div style={{
 				width: "280px",
@@ -78,12 +79,17 @@ export default function ProductsPage() {
 					fontWeight={800}
 					variant="h4"
 				>FILTER</Typography>
-				<FilterList />
+				<FilterList selectedCategory={category}/>
 			</div>
 
 			<Devider />
 
-			<Box>
+			<Box
+				sx={{
+					display: "flex",
+					flexGrow: 1
+				}}
+			>
 				<Grid container>
 					{products.map((product, index) => (
 						<ProductCard key={index} product={product} />

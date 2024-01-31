@@ -8,6 +8,7 @@ interface PostProductToBasketRequestProps {
 
 export function postProductToBasketRequest(basketId: string, productId: string): Promise<PostProductToBasketRequestProps> {
     const url = makeAddProductToBasketURL(basketId)
+    console.log(`posted product to basket with URL: ${url}`)
     const respone = fetch(url, {
         method: 'POST',
         headers: {
@@ -31,12 +32,10 @@ export function postProductToBasketRequest(basketId: string, productId: string):
             return {}
         })
         .then(data => {
-            console.log(data)
             return { data: data, error: null };
         })
         .catch(err => {
-            
-            //console.log(`Got an error while posting to URL: ${url}: ${err}`)
+            console.log(`Got an error while posting to URL: ${url}: ${err}`)
             return { data: null, error: err }
         })
     return respone;
@@ -104,7 +103,7 @@ export function postBasketRequest(basketId: string): Promise<PostBasketRequestPr
             if (!response.ok) {
                 throw Error("Error Fetching Data");
             }
-            return response.json()
+            return {}
         })
         .then(data => {
             return { data: data, error: null };

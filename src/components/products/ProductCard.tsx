@@ -48,7 +48,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 					/>
 				</div>
 				<CardContent>
-					<Link component={RouterLink} to={`${product.id}`}>
+					<Link component={RouterLink} to={`/products/${product.id}`}>
 						<Typography variant="h5" gutterBottom marginBottom={"10px"} noWrap={true}>
 							{product.name}
 						</Typography>
