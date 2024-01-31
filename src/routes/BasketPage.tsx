@@ -23,6 +23,11 @@ const BuyButton = styled(Button)`
 		transform: translate(8px, 8px);
 		box-shadow: 0px 0px 0px;
 	}
+
+	&.${buttonClasses.disabled} {
+		color: inherit;
+		background-color: ${theme.palette.grey[400]};
+	}
 `;
 
 export interface Basket {
@@ -51,6 +56,7 @@ export default function BasketPage() {
 				setTotalCost(basketResponse.data.totalCost)
 				const itemsResponse = await getBasketItemsRequest(session.getSessionId())
 				if (itemsResponse.error === null && itemsResponse.data !== null) {
+					console.log(itemsResponse.data)
 					setBasketItems(itemsResponse.data)
 				}
 			}
@@ -109,7 +115,7 @@ export default function BasketPage() {
 						marginBottom: "30px"
 					}}
 				>
-					<BuyButton>
+					<BuyButton disabled={basketItems.length === 0}>
 						<Typography variant="h3" fontWeight={800}>
 							BUY
 						</Typography>
