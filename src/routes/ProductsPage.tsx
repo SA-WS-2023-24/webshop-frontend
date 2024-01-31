@@ -66,7 +66,7 @@ export default function ProductsPage() {
 	return (
 		<div style={{
 			display: "flex",
-			flexGrow: 1
+			flexGrow: 1,
 		}}>
 			<div style={{
 				width: "280px",
@@ -87,7 +87,9 @@ export default function ProductsPage() {
 			<Box
 				sx={{
 					display: "flex",
-					flexGrow: 1
+					flexGrow: 1,
+					marginBottom: "20px"
+					
 				}}
 			>
 				<Grid container>
