@@ -168,7 +168,7 @@ export default function NavigationBar() {
                         {(session.basket.items.length === 0) ? (
                             <ShoppingCartIcon />
                         ) : (
-                            <Badge badgeContent={session.basket.items.length} color="error">
+                            <Badge badgeContent={session.basket.items.map((item) => item.quantity).reduce((a,b) => a + b)} color="error">
                                 <ShoppingCartIcon />
                             </Badge>
                         )}
