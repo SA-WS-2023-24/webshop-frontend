@@ -19,8 +19,8 @@ const StyledButton = styled(Button)`
 
 	&:hover {
 		cursor: pointer;
-        box-shadow: 6px 6px 0px black;
-        transform: translate(-2px, -2px);
+        transform: translate(1px, 1px);
+		box-shadow: 3px 3px 0px black;
         background-color: ${theme.palette.primary.dark};
 	}
 
@@ -51,17 +51,19 @@ const BasketButton = forwardRef(function CustomButton(
 
 
 interface ProductCardProps {
-	product: Product;
+	product: Product
+	drawBottomBorder: boolean
+	drawRightBorder: boolean
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product, drawRightBorder, drawBottomBorder }: ProductCardProps) {
 	const session = useContext(SessionContext);
 
 	return (
 		<Grid item xs={3}>
 			<Card sx={{
-				borderRight: "8px solid black",
-				borderBottom: "8px solid black",
+				borderRight: `${drawRightBorder ? "8px solid black" : ""}`,
+				borderBottom: `${drawBottomBorder ? "8px solid black" : ""}`,
 				borderRadius: 0,
 				height: 400
 			}}>

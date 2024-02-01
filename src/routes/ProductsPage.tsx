@@ -85,13 +85,21 @@ export default function ProductsPage() {
 				sx={{
 					display: "flex",
 					flexGrow: 1,
-					marginBottom: "20px"
 					
 				}}
 			>
 				<Grid container>
 					{products.map((product, index) => (
-						<ProductCard key={index} product={product} />
+						<ProductCard 
+							key={product.id}
+							product={product}
+							drawRightBorder={((index + 1) % 4) !== 0}
+							drawBottomBorder={
+								products.length < 8 ||
+								index + 1 <= products.length - 
+									((products.length % 4) === 0 ? 4 : (products.length % 4))
+							}
+						/>
 					))}
 				</Grid>
 			</Box>
