@@ -1,15 +1,55 @@
-import {
-	Box,
-	Card,
-	CardContent,
-	Grid,
-	Link,
-	Typography,
-} from "@mui/material";
+import { Card, CardContent, Grid, Link, Typography, styled,} from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { Product } from "../../routes/ProductsPage";
-import { useContext } from "react";
+import { forwardRef, useContext } from "react";
 import { SessionContext } from "../../context/SessionContext";
+import { Button, ButtonProps, useButton } from "@mui/base";
+import theme from "../../theme";
+
+const StyledButton = styled(Button)`
+	background-color: ${theme.palette.primary.main};
+	border: 4px solid black;
+	border-radius: 0px;
+	box-shadow: 4px 4px 0px black;
+	width: 100px;
+	height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+	&:hover {
+		cursor: pointer;
+        box-shadow: 6px 6px 0px black;
+        transform: translate(-2px, -2px);
+        background-color: ${theme.palette.primary.dark};
+	}
+
+	&:active {
+        box-shadow: 0px 0px 0px;
+		transform: translate(4px, 4px);
+	}
+`;
+
+const BasketButton = forwardRef(function CustomButton(
+    props: ButtonProps,
+    ref: React.ForwardedRef<any>,
+  ) {
+    console.log(props)
+    const { children } = props;
+    const { getRootProps } = useButton({
+      ...props,
+      rootRef: ref,
+    });
+  
+    return (
+      <StyledButton
+        {...getRootProps()}
+      >
+        {children}
+      </StyledButton>
+    );
+  });
+
 
 interface ProductCardProps {
 	product: Product;
@@ -61,28 +101,11 @@ export default function ProductCard({ product }: ProductCardProps) {
 						<Typography variant="h5" color="inherit" sx={{ fontWeight: 800 }}>
 							{`${product.price.toFixed(2)} EUR`}
 						</Typography>
-						<Box
-							color="primary"
+						<BasketButton
 							onClick={() => session.addToBasket(product.id)}
-							sx={{
-								padding: "2px 8px 2px 8px",
-								border: "4px solid black",
-								borderRadius: 0,
-								backgroundColor: "primary.main",
-								color: "black",
-								boxShadow: "4px 4px 0px black",
-								'&:click': {
-									borderColor: "white"
-								},
-								'&:hover': {
-									transform: "translate(2px, 2px)",
-									boxShadow: "0px 0px 0px",
-									cursor: "pointer"
-								}
-							}}
 						>
 							<Typography variant="h5">Basket</Typography>
-						</Box>
+						</BasketButton>
 					</div>
 				</CardContent>
 			</Card>

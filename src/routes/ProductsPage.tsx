@@ -21,7 +21,6 @@ async function requestAllProducts() {
 			if (!response.ok) {
 				console.error("error occured!");
 			}
-			console.log(response);
 			return response.json();
 		})
 		.then((data) => {
@@ -39,7 +38,6 @@ async function requestProductsFromCategory(category: string) {
 			if (!response.ok) {
 				console.error("error occured!");
 			}
-			console.log(response);
 			return response.json();
 		})
 		.then((data) => {
@@ -52,7 +50,6 @@ async function requestProductsFromCategory(category: string) {
 }
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
-	console.log(params.category)
 	if(params.category === undefined) {
 		return requestAllProducts();
 	} else {

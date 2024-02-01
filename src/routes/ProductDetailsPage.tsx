@@ -14,7 +14,6 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
             if (!response.ok) {
                 console.error("error occured!");
             }
-            console.log(response);
             return response.json();
         })
         .then((data) => {
@@ -53,7 +52,6 @@ const CustomButton = forwardRef(function CustomButton(
     props: ButtonProps,
     ref: React.ForwardedRef<any>,
   ) {
-    console.log(props)
     const { children } = props;
     const { getRootProps } = useButton({
       ...props,

@@ -1,12 +1,12 @@
-import { Box, Button, Typography, styled } from "@mui/material"
+import { Box, Typography, styled } from "@mui/material"
 import DeleteIcon from '@mui/icons-material/Delete';
 import theme from "../../theme";
-import { buttonClasses } from "@mui/base";
+import { Button, ButtonProps, useButton } from "@mui/base";
 import { BasketItem as BasketItemProps } from "../../routes/BasketPage";
-import { useContext } from "react";
+import { forwardRef, useContext } from "react";
 import { SessionContext } from "../../context/SessionContext";
 
-const DeleteButton = styled(Button)`
+const StyledButton = styled(Button)`
 	background-color: ${theme.palette.primary.main};
 	border: 4px solid black;
 	border-radius: 0px;
@@ -19,15 +19,38 @@ const DeleteButton = styled(Button)`
 
 	&:hover {
 		cursor: pointer;
+        box-shadow: 6px 6px 0px black;
+        transform: translate(-2px, -2px);
+        background-color: ${theme.palette.primary.dark};
 	}
 
-	&.${buttonClasses.active} {
+	&:active {
+        box-shadow: 0px 0px 0px;
 		transform: translate(4px, 4px);
-		box-shadow: 0px 0px 0px;
 	}
 `;
 
-export default function BasketItem({ productId ,name, imgLink, description, price, quantity }: BasketItemProps) {
+const DeleteButton = forwardRef(function CustomButton(
+    props: ButtonProps,
+    ref: React.ForwardedRef<any>,
+) {
+    console.log(props)
+    const { children } = props;
+    const { getRootProps } = useButton({
+        ...props,
+        rootRef: ref,
+    });
+
+    return (
+        <StyledButton
+            {...getRootProps()}
+        >
+            {children}
+        </StyledButton>
+    );
+});
+
+export default function BasketItem({ productId, name, imgLink, description, price, quantity }: BasketItemProps) {
     const session = useContext(SessionContext);
 
     return (

@@ -1,12 +1,13 @@
-import { useContext } from "react";
+import { forwardRef, useContext } from "react";
 import { SessionContext } from "../context/SessionContext";
 import { Box, Grid, Typography, styled } from "@mui/material";
 import BasketItem from "../components/basket/BasketItem";
-import { Button, buttonClasses } from "@mui/base";
+import { Button, ButtonProps, useButton } from "@mui/base";
 import theme from "../theme";
 import { VerticalBorderDivider } from "../components/main/Divider";
+import clsx from 'clsx';
 
-const BuyButton = styled(Button)`
+const StyledButton = styled(Button)`
 	background-color: ${theme.palette.primary.main};
 	border: 8px solid black;
 	border-radius: 0px;
@@ -16,18 +17,48 @@ const BuyButton = styled(Button)`
 
 	&:hover {
 		cursor: pointer;
+        box-shadow: 10px 10px 0px black;
+        transform: translate(-2px, -2px);
+        background-color: ${theme.palette.primary.dark};
 	}
 
-	&.${buttonClasses.active} {
+	&.active {
 		transform: translate(8px, 8px);
 		box-shadow: 0px 0px 0px;
 	}
 
-	&.${buttonClasses.disabled} {
+	&.disabled {
 		color: inherit;
 		background-color: ${theme.palette.grey[400]};
+		cursor: default;
+		box-shadow: 8px 8px 0px black;
+        transform: translate(0px, 0px);
 	}
 `;
+
+const BuyButton = forwardRef(function CustomButton(
+    props: ButtonProps,
+    ref: React.ForwardedRef<any>,
+  ) {
+    const { disabled, children } = props;
+    const { active, getRootProps } = useButton({
+      ...props,
+      rootRef: ref,
+    });
+  
+    return (
+      <StyledButton
+        {...getRootProps()}
+		className={clsx({
+			active,
+			disabled
+		})
+		}
+      >
+        {children}
+      </StyledButton>
+    );
+  });
 
 export interface Basket {
 	basketId: string
@@ -101,7 +132,10 @@ export default function BasketPage() {
 						marginBottom: "30px"
 					}}
 				>
-					<BuyButton disabled={session.basket.items.length === 0}>
+					<BuyButton 
+						disabled={session.basket.items.length === 0}
+						onClick={() => console.log("Checkout needs to be called here")}
+					>
 						<Typography variant="h3" fontWeight={800}>
 							BUY
 						</Typography>
