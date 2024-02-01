@@ -1,4 +1,4 @@
-import { forwardRef, useContext } from "react";
+import { forwardRef, useContext, useEffect } from "react";
 import { SessionContext } from "../context/SessionContext";
 import { Box, Grid, Typography, styled } from "@mui/material";
 import BasketItem from "../components/basket/BasketItem";
@@ -79,6 +79,11 @@ export interface BasketItem {
 
 export default function BasketPage() {
 	const session = useContext(SessionContext);
+
+	useEffect(() => {
+		session.updateBasket()
+	}, [])
+
 
 	return (
 		<Grid container>

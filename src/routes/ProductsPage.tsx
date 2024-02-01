@@ -3,6 +3,8 @@ import ProductCard from "../components/products/ProductCard";
 import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
 import FilterList from "../components/products/FilterList";
 import { VerticalBorderDivider } from "../components/main/Divider";
+import { useContext, useEffect } from "react";
+import { SessionContext } from "../context/SessionContext";
 //import { useEffect, useState } from "react";
 
 export interface Product {
@@ -33,20 +35,7 @@ async function requestAllProducts() {
 }
 
 async function requestProductsFromCategory(category: string) {
-	const response = await fetch(`http://192.168.49.2:30001/v1/products/filter?category=${category}`)
-		.then((response) => {
-			if (!response.ok) {
-				console.error("error occured!");
-			}
-			return response.json();
-		})
-		.then((data) => {
-			return {products: data, category: category};
-		})
-		.catch((error) => {
-			console.error("error fetching products: ", error);
-		});
-	return response;
+	return category;
 }
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -58,7 +47,12 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 }
 
 export default function ProductsPage() {
-	const {products, category} = useLoaderData() as {products: Product[], category: string}
+	const session = useContext(SessionContext)
+	const {category} = useLoaderData() as {category: string}
+
+	useEffect(() => {
+		session.getProducts()
+	}, [])
 
 	return (
 		<div style={{
@@ -89,15 +83,15 @@ export default function ProductsPage() {
 				}}
 			>
 				<Grid container>
-					{products.map((product, index) => (
+					{session.products.map((product, index) => (
 						<ProductCard 
 							key={product.id}
 							product={product}
 							drawRightBorder={((index + 1) % 4) !== 0}
 							drawBottomBorder={
-								products.length < 8 ||
-								index + 1 <= products.length - 
-									((products.length % 4) === 0 ? 4 : (products.length % 4))
+								session.products.length < 8 ||
+								index + 1 <= session.products.length - 
+									((session.products.length % 4) === 0 ? 4 : (session.products.length % 4))
 							}
 						/>
 					))}

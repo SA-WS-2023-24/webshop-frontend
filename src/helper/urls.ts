@@ -1,3 +1,11 @@
+export function makeGetProductsURL() {
+    return "http://192.168.49.2:30001/v1/products"
+}
+
+export function makeSearchProductURL(params: URLSearchParams): string {
+    return `http://192.168.49.2:30001/v1/product/search?${params}`
+}
+
 export function makeCreateBasketURL(basketId: string): string {
     return `http://192.168.49.2:30003/v1/basket/${basketId}`
 }

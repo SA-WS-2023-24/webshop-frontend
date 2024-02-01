@@ -1,10 +1,10 @@
-import { AppBar, Badge, Box, IconButton, InputBase, Link, Menu, MenuItem, Toolbar, Typography, alpha, styled } from "@mui/material";
+import { AppBar, Autocomplete, Badge, Box, Link, TextField, Toolbar, Typography, alpha, styled } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PersonIcon from '@mui/icons-material/Person';
 import { Link as RouterLink } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { SessionContext } from "../../context/SessionContext";
 import { VerticalBorderDivider as Devider } from "./Divider";
 
@@ -30,9 +30,11 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
     justifyContent: 'center',
 }));
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
+const CustomAutocomplete = styled(Autocomplete)(({ theme }) => ({
     color: 'inherit',
     width: '100%',
+    border: 0,
+    shadow: 0,
     '& .MuiInputBase-input': {
         padding: theme.spacing(1, 1, 1, 0),
         // vertical padding + font size from searchIcon
@@ -55,14 +57,6 @@ const contentBoxStyle = {
 
 export default function NavigationBar() {
     const session = useContext(SessionContext)
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
 
     return (
         <AppBar
@@ -137,23 +131,35 @@ export default function NavigationBar() {
                     </Box>
                 </Link>
                 <Devider />
-                <Search sx={{ flexGrow: 1 }}>
+                <Search 
+                    sx={{ flexGrow: 1 }}
+                >
                     <SearchIconWrapper>
                         <SearchIcon />
                     </SearchIconWrapper>
-                    <StyledInputBase
-                        placeholder="SEARCH..."
-                        sx={{ fontSize: 24 }}
-                        inputProps={{ 'aria-label': 'search' }}
+                    <CustomAutocomplete
+                        freeSolo
+                        options={session.products.map((hit) => hit.name)}
+                        onInputChange={(_, value) => session.searchProducts(value)}
+                        renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label={<Typography variant="h6">SEARCH...</Typography>}
+                              InputProps={{
+                                ...params.InputProps,
+                                type: 'search',
+                              }}
+                            />
+                          )}
                     />
                 </Search>
                 <Devider />
                 <Link
                     component={RouterLink}
-                    to={`wishlist`}
+                    to={`products`}
                     sx={{ color: 'inherit' }}
                 >
-                    <Box sx={{...contentBoxStyle, width: 80}}>
+                    <Box sx={{ ...contentBoxStyle, width: 80 }}>
                         <BookmarkIcon />
                     </Box>
                 </Link>
@@ -164,46 +170,24 @@ export default function NavigationBar() {
                     to={`basket`}
                     sx={{ color: 'inherit' }}
                 >
-                    <Box sx={{...contentBoxStyle, width: 80}}>
+                    <Box sx={{ ...contentBoxStyle, width: 80 }}>
                         {(session.basket.items.length === 0) ? (
                             <ShoppingCartIcon />
                         ) : (
-                            <Badge badgeContent={session.basket.items.map((item) => item.quantity).reduce((a,b) => a + b)} color="error">
+                            <Badge
+                                badgeContent={session.basket.items.map((item) => 
+                                    item.quantity).reduce((a, b) => a + b)}
+                                
+                                color="error"
+                            >
                                 <ShoppingCartIcon />
                             </Badge>
                         )}
                     </Box>
                 </Link>
                 <Devider />
-                <Box sx={contentBoxStyle}>
-                    <IconButton
-                        disableRipple={true}
-                        size="large"
-                        color="inherit"
-                        onClick={handleClick}
-                    >
-                        <PersonIcon />
-                    </IconButton>
-                    <Menu
-                        id="basic-menu"
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        MenuListProps={{
-                            'aria-labelledby': 'basic-button',
-                        }}
-                    >
-                        <Link
-                            component={RouterLink}
-                            to={`login`}
-                            sx={{ color: 'inherit' }}
-                        ><MenuItem>Login</MenuItem></Link>
-                        <Link
-                            component={RouterLink}
-                            to={`signup`}
-                            sx={{ color: 'inherit' }}
-                        ><MenuItem>Sign Up</MenuItem></Link>
-                    </Menu>
+                <Box sx={{ ...contentBoxStyle, minWidth: "80px" }}>
+                    <PersonIcon />
                 </Box>
             </Toolbar>
         </AppBar>

@@ -1,5 +1,6 @@
 import { Basket, BasketItem } from "../routes/BasketPage";
-import { makeAddProductToBasketURL, makeGetBasketItemsURL, makeGetBasketURL, makeRemoveProductFromBasketURL } from "./urls";
+import { Product } from "../routes/ProductsPage";
+import { makeAddProductToBasketURL, makeGetBasketItemsURL, makeGetBasketURL, makeGetProductsURL, makeRemoveProductFromBasketURL, makeSearchProductURL } from "./urls";
 
 interface PostProductToBasketRequestProps {
     data: null | {}
@@ -150,6 +151,76 @@ export function getBasketItemsRequest(basketId: string): Promise<GetBasketItemsR
         })
         .catch(err => {
             console.log(`Got an error while fetching URL: ${url}: ${err.message}`)
+            return { data: null, error: err }
+        })
+    return response;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+interface SearchProductRequestProps {
+    data: null | Product[]
+    error: null | Error
+}
+
+export function doSearchProductRequest(params: URLSearchParams): Promise<SearchProductRequestProps> {
+    const url = makeSearchProductURL(params)
+    console.log(`fetchGetBasketURL: ${url}`)
+    const response = fetch(url)
+        .then(response => {
+            if (response.status === 404) {
+                throw new Error("No Data Found");
+            }
+            if (response.status === 500) {
+                throw new Error("Server Error");
+            }
+            if (!response.ok) {
+                throw new Error("Error Fetching Data");
+            }
+            return response.json()
+        })
+        .then(data => {
+            return { data: data, error: null }
+        })
+        .catch(err => {
+            console.log(`Got an error while fetching URL: ${url}: ${err.message}`)
+            return { data: null, error: err }
+        })
+    return response;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+interface GetProductRequestProps {
+    data: null | Product[]
+    error: null | Error
+}
+
+export function doGetProductsRequest(): Promise<GetProductRequestProps> {
+    const url = makeGetProductsURL()
+    console.log(`fetchGetBasketURL: ${url}`)
+    const response = fetch(url)
+        .then(response => {
+            if (response.status === 404) {
+                throw new Error("No Data Found");
+            }
+            if (response.status === 500) {
+                throw new Error("Server Error");
+            }
+            if (!response.ok) {
+                throw new Error("Error Fetching Data");
+            }
+            return response.json()
+        })
+        .then(data => {
+            return { data: data, error: null }
+        })
+        .catch(err => {
+            console.log(`Got an error while fetching URL: ${url}: ${err}`)
             return { data: null, error: err }
         })
     return response;

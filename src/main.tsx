@@ -6,10 +6,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material'
 import theme from './theme'
 import ErrorPage from './routes/ErrorPage'
 import HomePage from './routes/HomePage'
-import LoginPage from './routes/LoginPage'
-import SignUpPage from './routes/SignUpPage'
 import ProductsPage, { loader as productsLoader } from './routes/ProductsPage'
-import CheckoutPage from './routes/CheckoutPage'
 import ProductDetailsPage, { loader as productDetailsLoader } from './routes/ProductDetailsPage'
 import BasketPage from './routes/BasketPage'
 
@@ -54,19 +51,6 @@ const router = createBrowserRouter([
             },
         ]
     },
-    {
-        path: "/login",
-        element: <LoginPage />
-    },
-    {
-        path: "/signup",
-        element: <SignUpPage />
-    },
-    {
-        path: "/checkout",
-        element: <CheckoutPage />,
-    },
-
 ])
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
