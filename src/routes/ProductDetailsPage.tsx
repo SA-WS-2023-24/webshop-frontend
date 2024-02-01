@@ -37,8 +37,8 @@ const DetailsButton = styled(BaseButton)`
 
 	&:hover {
 		cursor: pointer;
-        box-shadow: 10px 10px 0px black;
-        transform: translate(-2px, -2px);
+        box-shadow: 7px 7px 0px black;
+        transform: translate(1px, 1px);
         background-color: ${theme.palette.primary.dark};
 	}
 
@@ -99,7 +99,7 @@ export default function ProductDetailsPage() {
                         padding: '20px',
                         width: "600px",
                         height: "100%",
-						objectFit: "scale-down"
+						objectFit: "cover"
                     }}
                 />
                 <div style={{

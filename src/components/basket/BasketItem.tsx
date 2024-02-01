@@ -19,8 +19,8 @@ const StyledButton = styled(Button)`
 
 	&:hover {
 		cursor: pointer;
-        box-shadow: 6px 6px 0px black;
-        transform: translate(-2px, -2px);
+        box-shadow: 3px 3px 0px black;
+        transform: translate(1px, 1px);
         background-color: ${theme.palette.primary.dark};
 	}
 
