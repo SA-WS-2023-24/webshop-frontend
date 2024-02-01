@@ -34,7 +34,6 @@ const BasketButton = forwardRef(function CustomButton(
     props: ButtonProps,
     ref: React.ForwardedRef<any>,
   ) {
-    console.log(props)
     const { children } = props;
     const { getRootProps } = useButton({
       ...props,
@@ -82,7 +81,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 							padding: "10px",
 							width: "100%",
 							height: "100%",
-							objectFit: "scale-down"
+							objectFit: "cover"
 						}}
 					/>
 				</div>

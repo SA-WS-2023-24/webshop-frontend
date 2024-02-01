@@ -34,7 +34,6 @@ const DeleteButton = forwardRef(function CustomButton(
     props: ButtonProps,
     ref: React.ForwardedRef<any>,
 ) {
-    console.log(props)
     const { children } = props;
     const { getRootProps } = useButton({
         ...props,
