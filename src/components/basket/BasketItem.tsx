@@ -27,12 +27,7 @@ const DeleteButton = styled(Button)`
 	}
 `;
 
-interface BasketItemCallbacks {
-    onUpdate: (basketId: string, productId: string) => void
-    onDelete: (basketId: string, productId: string) => void
-}
-
-export default function BasketItem({ productId ,name, imgLink, description, price, quantity, onUpdate, onDelete }: BasketItemProps & BasketItemCallbacks) {
+export default function BasketItem({ productId ,name, imgLink, description, price, quantity }: BasketItemProps) {
     const session = useContext(SessionContext);
 
     return (
@@ -102,7 +97,7 @@ export default function BasketItem({ productId ,name, imgLink, description, pric
                     sx={{ marginRight: "20px" }}
                 >{price.toFixed(2)} EUR</Typography>
                 <DeleteButton
-                    onClick={() => onDelete(session.getSessionId(), productId)}
+                    onClick={() => session.removeFromBasket(productId)}
                 >
                     <DeleteIcon />
                 </DeleteButton>

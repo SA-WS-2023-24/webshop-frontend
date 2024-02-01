@@ -4,7 +4,6 @@ import {
 	CardContent,
 	Grid,
 	Link,
-	Rating,
 	Typography,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
@@ -25,7 +24,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 				borderRight: "8px solid black",
 				borderBottom: "8px solid black",
 				borderRadius: 0,
-				height: 450
+				height: 400
 			}}>
 				<div style={{
 					margin: "20px",
@@ -53,8 +52,8 @@ export default function ProductCard({ product }: ProductCardProps) {
 							{product.name}
 						</Typography>
 					</Link>
-					<Rating value={product.rating} readOnly precision={0.1} size="large"/>
 					<div style={{
+						marginTop: "30px",
 						display: "flex",
 						justifyContent: "space-between",
 						alignItems: "center"

@@ -1,5 +1,5 @@
 import { Basket, BasketItem } from "../routes/BasketPage";
-import { makeAddProductToBasketURL, makeCreateBasketURL, makeGetBasketItemsURL, makeGetBasketURL, makeRemoveProductFromBasketURL } from "./urls";
+import { makeAddProductToBasketURL, makeGetBasketItemsURL, makeGetBasketURL, makeRemoveProductFromBasketURL } from "./urls";
 
 interface PostProductToBasketRequestProps {
     data: null | {}
@@ -52,7 +52,7 @@ interface PostRemoveProductFromBasketRequestProps {
 
 export function postRemoveProductFromBasketRequest(basketId: string, productId: string): Promise<PostRemoveProductFromBasketRequestProps> {
     const url = makeRemoveProductFromBasketURL(basketId)
-    console.log(`posted product to basket with URL: ${url}`)
+    console.log(`posted remove product from basket with URL: ${url}`)
     const respone = fetch(url, {
         method: 'POST',
         headers: {
@@ -119,44 +119,6 @@ export function getBasketRequest(basketId: string): Promise<GetBasketRequestProp
     return response;
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-
-
-interface PostBasketRequestProps {
-    data: null | {}
-    error: null | Error
-}
-
-export function postBasketRequest(basketId: string): Promise<PostBasketRequestProps> {
-    const url = makeCreateBasketURL(basketId)
-    const respone = fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    })
-        .then(response => {
-            if (response.status === 404) {
-                throw Error("No Data Found");
-            }
-            if (response.status === 500) {
-                throw Error("Server Error");
-            }
-            if (!response.ok) {
-                throw Error("Error Fetching Data");
-            }
-            return {}
-        })
-        .then(data => {
-            return { data: data, error: null };
-        })
-        .catch(err => {
-            console.log(`Got an error while posting to URL: ${url}: ${err.message}`)
-            return { data: null, error: err }
-        })
-    return respone;
-}
 
 
 ////////////////////////////////////////////////////////////////////////////////

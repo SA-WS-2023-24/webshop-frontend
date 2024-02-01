@@ -153,7 +153,7 @@ export default function NavigationBar() {
                     to={`wishlist`}
                     sx={{ color: 'inherit' }}
                 >
-                    <Box sx={contentBoxStyle}>
+                    <Box sx={{...contentBoxStyle, width: 80}}>
                         <BookmarkIcon />
                     </Box>
                 </Link>
@@ -164,11 +164,11 @@ export default function NavigationBar() {
                     to={`basket`}
                     sx={{ color: 'inherit' }}
                 >
-                    <Box sx={contentBoxStyle}>
-                        {(session.getCartItemCount() < 1) ? (
+                    <Box sx={{...contentBoxStyle, width: 80}}>
+                        {(session.basket.items.length === 0) ? (
                             <ShoppingCartIcon />
                         ) : (
-                            <Badge badgeContent={session.getCartItemCount()} color="error">
+                            <Badge badgeContent={session.basket.items.length} color="error">
                                 <ShoppingCartIcon />
                             </Badge>
                         )}

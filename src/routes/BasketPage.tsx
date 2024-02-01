@@ -1,10 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { SessionContext } from "../context/SessionContext";
 import { Box, Grid, Typography, styled } from "@mui/material";
 import BasketItem from "../components/basket/BasketItem";
 import { Button, buttonClasses } from "@mui/base";
 import theme from "../theme";
-import { getBasketItemsRequest, getBasketRequest, postRemoveProductFromBasketRequest } from "../helper/requests";
 import { VerticalBorderDivider } from "../components/main/Divider";
 
 const BuyButton = styled(Button)`
@@ -34,6 +33,7 @@ export interface Basket {
 	basketId: string
 	totalCost: number
 	freeShippingLimit: number
+	items: BasketItem[]
 }
 
 export interface BasketItem {
@@ -48,36 +48,6 @@ export interface BasketItem {
 
 export default function BasketPage() {
 	const session = useContext(SessionContext);
-	const [totalCost, setTotalCost] = useState<number>(0);
-	const [basketItems, setBasketItems] = useState<BasketItem[]>([]);
-
-	useEffect(() => {
-		updateBasket()
-	}, [])
-
-	async function updateBasket() {
-		const basketResponse = await getBasketRequest(session.getSessionId())
-		if (basketResponse.error === null && basketResponse.data !== null) {
-			console.log(basketResponse.data)
-			setTotalCost(basketResponse.data.totalCost)
-			const itemsResponse = await getBasketItemsRequest(session.getSessionId())
-			if (itemsResponse.error === null && itemsResponse.data !== null) {
-				console.log(itemsResponse.data)
-				setBasketItems(itemsResponse.data)
-			}
-		}
-	}
-
-	async function onDelete(basketId: string, productId: string) {
-		await postRemoveProductFromBasketRequest(basketId, productId)
-		await updateBasket()
-	}
-	
-	function onUpdate(basketId: string, productId: string) {
-		postRemoveProductFromBasketRequest(basketId, productId)
-	}
-	
-
 
 	return (
 		<Grid container>
@@ -97,13 +67,13 @@ export default function BasketPage() {
 					alignItems="center"
 				>
 					<Typography variant="h3" fontWeight={800}>
-						{totalCost.toFixed(2)} EUR
+						{session.basket.totalCost.toFixed(2)} EUR
 					</Typography>
 				</Box>
 			</Grid>
 			<VerticalBorderDivider />
 			<Grid item flexGrow={1}>
-				{basketItems.map((basketItem, index) => (
+				{session.basket.items.map((basketItem, index) => (
 					<BasketItem
 						key={index}
 						productId={basketItem.productId}
@@ -112,8 +82,6 @@ export default function BasketPage() {
 						description={basketItem.description}
 						price={basketItem.price}
 						quantity={basketItem.quantity}
-						onDelete={onDelete}
-						onUpdate={onUpdate}
 					/>
 				))}
 
@@ -133,7 +101,7 @@ export default function BasketPage() {
 						marginBottom: "30px"
 					}}
 				>
-					<BuyButton disabled={basketItems.length === 0}>
+					<BuyButton disabled={session.basket.items.length === 0}>
 						<Typography variant="h3" fontWeight={800}>
 							BUY
 						</Typography>
