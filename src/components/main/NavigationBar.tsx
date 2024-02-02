@@ -7,6 +7,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { useContext } from "react";
 import { SessionContext } from "../../context/SessionContext";
 import { VerticalBorderDivider as Devider } from "./Divider";
+import { Button } from "@mui/base";
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -82,7 +83,7 @@ export default function NavigationBar() {
 
     return (
         <AppBar
-            position="absolute"
+            position="relative"
             color="inherit"
             elevation={0}
             sx={{
@@ -201,9 +202,21 @@ export default function NavigationBar() {
                     </Box>
                 </Link>
                 <Devider />
-                <Box sx={{ ...contentBoxStyle, minWidth: "80px" }}>
+                <Button 
+                    onClick={() => session.getUserProfile()}
+                    style={{
+                        backgroundColor: "inherit",
+                        width: "80px",
+                        height: "64px",
+                        border: 0,
+                        padding: 0,
+                        boxShadow: "0 0 0",
+                    }}
+                >
+                <Box sx={{ ...contentBoxStyle, width: "80px" }}>
                     <PersonIcon />
                 </Box>
+                </Button>
             </Toolbar>
         </AppBar>
     )

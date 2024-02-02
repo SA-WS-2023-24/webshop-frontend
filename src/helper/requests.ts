@@ -272,7 +272,13 @@ interface GetUserProfileRequestProps {
 export function doGetUserProfileRequest(): Promise<GetUserProfileRequestProps> {
     const url = makeGetUserProfileURL()
     console.log(`fetchGetBasketURL: ${url}`)
-    const response = fetch(url)
+    const response = fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': 'localhost:3000',
+        },
+    })
         .then(response => {
             if (response.status === 404) {
                 throw new Error("No Data Found");

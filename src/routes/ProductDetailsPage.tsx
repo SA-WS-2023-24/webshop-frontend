@@ -139,15 +139,13 @@ export default function ProductDetailsPage() {
                     display: "flex",
                     flexGrow: 1,
                     justifyContent: "center",
-                    alignItems: "center",
                     marginTop: "20px",
                     marginBottom: "20px"
                 }}
             >
                 <Box
                     sx={{
-                        width: 800,
-                        height: 1
+                        width: 1000,
                     }}
                 >
                     <ProductDetailTabs />

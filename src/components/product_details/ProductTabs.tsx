@@ -1,93 +1,86 @@
-import { Box, Tab, Tabs, Typography } from "@mui/material";
-import { useState } from "react";
+import {
+	Tab as BaseTab, TabPanel as BaseTabPanel, Tabs, TabsList as BaseTabsList,
+	buttonClasses, tabClasses
+} from "@mui/base";
+import { Box, Typography, styled } from "@mui/material";
+import theme from "../../theme";
 
+const Tab = styled(BaseTab)`
+  cursor: pointer;
+  font-weight: bold;
+  background-color: inherit;
+  line-height: 1.5;
+  margin-right: -8px;
+  padding: 8px 20px;
+  border: 8px black solid;
+  display: flex;
+  justify-content: center;
 
+  &:hover {
+    background-color: ${theme.palette.primary.main};
+  }
 
-interface TabPanelProps {
-    children?: React.ReactNode;
-    index: number;
-    value: number;
-}
+  &.${tabClasses.selected} {
+    background-color: ${theme.palette.primary.main};
+  }
 
-function CustomTabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
+  &.${buttonClasses.disabled} {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
 
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && (
-                <Box sx={{ p: 3 }}>
-                    <Typography>{children}</Typography>
-                </Box>
-            )}
-        </div>
-    );
-}
+const TabPanel = styled(BaseTabPanel)`
+  width: 100%;
+  display: flex;
+  flex-grow: 100%;
+  border: 8px solid black;
+`;
 
-function a11yProps(index: number) {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-    };
-}
+const TabsList = styled(BaseTabsList)(() => `
+	min-width: 400px;
+	background-color: inherit;
+	margin-bottom: -8px;
+	display: flex;
+	`,
+);
 
 export default function ProductDetailTabs() {
-    const [value, setValue] = useState(0);
 
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-        setValue(newValue);
-    };
+	return (
 
-    return (
-        <Box
-            sx={{
-                width: '100%',
-                height: "inherit"
-            }}
-        >
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="basic tabs example"
-                >
-                    <Tab
-                        label="DESCRIPTION" {...a11yProps(0)}
-                        sx={{
-                            border: "8px solid black"
-                        }}
-                    />
-                    <Tab label="DETAILS" {...a11yProps(1)} />
-                    <Tab label="REVIEWS" {...a11yProps(2)} />
-                    <Tab label="COMPARE" {...a11yProps(3)} />
-                </Tabs>
-            </Box>
-            <Box
-                sx={{
-                    width: 1,
-                    border: "8px solid black",
-                    display: "flex",
-                    flexGrow: 1
-                }}
-            >
-                <CustomTabPanel
-                    value={value}
-                    index={0}
-                >
-                    Item One
-                </CustomTabPanel>
-                <CustomTabPanel value={value} index={1}>
-                    Item Two
-                </CustomTabPanel>
-                <CustomTabPanel value={value} index={2}>
-                    Item Three
-                </CustomTabPanel>
-            </Box>
-        </Box>
-    );
+		<Tabs
+			defaultValue={1}
+			style={{
+				height: "100%",
+			}}
+		>
+			<TabsList>
+				<Tab value={1}>
+					<Typography variant="h4">
+						DESCRIBTION
+					</Typography>
+				</Tab>
+				<Tab value={2}>
+					<Typography variant="h4">
+						FEATURES
+					</Typography>
+				</Tab>
+				<Tab value={3}>
+					<Typography variant="h4">
+						REVIEWS
+					</Typography>
+				</Tab>
+				<Tab value={4}>
+					<Typography variant="h4">
+						COMPARE
+					</Typography>
+				</Tab>
+			</TabsList>
+			<TabPanel value={1}>First page</TabPanel>
+			<TabPanel value={2}>Second page</TabPanel>
+			<TabPanel value={3}>Third page</TabPanel>
+		</Tabs>
+
+	);
 }
