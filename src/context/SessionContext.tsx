@@ -67,7 +67,9 @@ export default function SessionContextProvider({ children }: CustomerContextProv
     }
 
     async function updateBasket() {
-        getBasketRequest(getSessionId())
+        const delay = 50;
+        setTimeout(() => {
+            getBasketRequest(getSessionId())
             .then(response => {
                 if (response.error === null && response.data !== null) {
                     setBasket(response.data)
@@ -75,12 +77,14 @@ export default function SessionContextProvider({ children }: CustomerContextProv
                     console.error(`ERROR while getting the basket\n: ${response.error}`)
                 }
             })
+        }, delay)
     }
 
     function addToBasket(productId: string) {
         postProductToBasketRequest(getSessionId(), productId)
             .then(response => {
                 if (response.error === null) {
+                    
                     updateBasket()
                 } else {
                     console.error(`ERROR while adding product to basket\n: ${response.error}`)

@@ -139,7 +139,7 @@ export default function NavigationBar() {
                     </SearchIconWrapper>
                     <CustomAutocomplete
                         freeSolo
-                        options={session.products.map((hit) => hit.name)}
+                        options={[]}
                         onInputChange={(_, value) => session.searchProducts(value)}
                         renderInput={(params) => (
                             <TextField
