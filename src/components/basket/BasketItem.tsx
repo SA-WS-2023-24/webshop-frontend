@@ -73,7 +73,7 @@ export default function BasketItem({ productId, name, imgLink, description, pric
                         padding: "10px",
                         width: "100%",
                         height: "100%",
-                        objectFit: "scale-down"
+                        objectFit: "cover"
                     }}
                 />
             </div>
