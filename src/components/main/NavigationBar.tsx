@@ -1,4 +1,4 @@
-import { AppBar, Autocomplete, Badge, Box, Link, TextField, Toolbar, Typography, alpha, styled } from "@mui/material";
+import { AppBar, Badge, Box, Link, Toolbar, Typography, alpha, styled, useAutocomplete } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -30,18 +30,31 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
     justifyContent: 'center',
 }));
 
-const CustomAutocomplete = styled(Autocomplete)(({ theme }) => ({
-    color: 'inherit',
-    width: '100%',
-    border: 0,
-    shadow: 0,
-    '& .MuiInputBase-input': {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        width: '100%',
-    }
-}));
+const StyledAutocompleteRoot = styled('div')(() => `
+    border-radius: 8px;
+    color: inherit;
+    background: inherit;
+    display: flex;
+    padding-left: 35px;
+    overflow: hidden;
+    width: 100%;
+  `,
+);
+
+const StyledInput = styled('input')(() => `
+    font-size: 24px;
+    font-family: inherit;
+    font-weight: 400;
+    line-height: 1.5;
+    color: inherit;
+    background: inherit;
+    border: none;
+    border-radius: inherit;
+    padding: 8px 12px;
+    outline: 0;
+    flex: 1 0 auto;
+  `,
+);
 
 const contentBoxStyle = {
     height: 64,
@@ -57,6 +70,15 @@ const contentBoxStyle = {
 
 export default function NavigationBar() {
     const session = useContext(SessionContext)
+
+    const {
+        getRootProps,
+        getInputProps,
+    } = useAutocomplete({
+        id: 'use-autocomplete-demo',
+        options: [],
+        onInputChange: (_, value) => session.searchProducts(value),
+    });
 
     return (
         <AppBar
@@ -131,27 +153,20 @@ export default function NavigationBar() {
                     </Box>
                 </Link>
                 <Devider />
-                <Search 
+                <Search
                     sx={{ flexGrow: 1 }}
                 >
                     <SearchIconWrapper>
                         <SearchIcon />
                     </SearchIconWrapper>
-                    <CustomAutocomplete
-                        freeSolo
-                        options={[]}
-                        onInputChange={(_, value) => session.searchProducts(value)}
-                        renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              label={<Typography variant="h6">SEARCH...</Typography>}
-                              InputProps={{
-                                ...params.InputProps,
-                                type: 'search',
-                              }}
-                            />
-                          )}
-                    />
+                    <StyledAutocompleteRoot
+                        {...getRootProps()}
+                    >
+                        <StyledInput
+                            {...getInputProps()}
+                            placeholder="SEARCH"
+                        />
+                    </StyledAutocompleteRoot>
                 </Search>
                 <Devider />
                 <Link
@@ -175,9 +190,9 @@ export default function NavigationBar() {
                             <ShoppingCartIcon />
                         ) : (
                             <Badge
-                                badgeContent={session.basket.items.map((item) => 
+                                badgeContent={session.basket.items.map((item) =>
                                     item.quantity).reduce((a, b) => a + b)}
-                                
+
                                 color="error"
                             >
                                 <ShoppingCartIcon />
