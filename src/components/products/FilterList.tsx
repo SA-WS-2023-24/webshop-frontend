@@ -1,25 +1,17 @@
 import { Checkbox, List, ListItem, ListItemButton, ListItemIcon, Typography } from "@mui/material";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { SessionContext } from "../../context/SessionContext";
 
-interface FilterListProps {
-    selectedCategory: string
-}
-
-
-export default function FilterList({ selectedCategory }: FilterListProps) {
-    const navigate = useNavigate();
-    const [checked, setChecked] = useState<string>(selectedCategory.toUpperCase());
+export default function FilterList() {
+    const session = useContext(SessionContext)
     const values: string[] = ["VIDEOCARD", "CPU", "CASE", "MOTHERBOARD", "RAM",
-        "STORAGE", "COOLING", "PERIPHERAL", "POWER_SUPPLY"]
+        "STORAGE", "COOLING", "PERIPHERAL", "POWER_SUPPLY"].sort()
 
     function handleChange(selection: string): void {
-        if (selection === checked) {
-            setChecked("")
-            navigate("/products")
+        if (selection === session.lastFilter) {
+            session.getProducts()
         } else {
-            setChecked(selection)
-            navigate(`/products/filter/${selection.toLowerCase()}`)
+            session.getProductsFromCategory(selection)
         }
     }
 
@@ -38,7 +30,7 @@ export default function FilterList({ selectedCategory }: FilterListProps) {
                                 <Checkbox
                                     key={value}
                                     edge="start"
-                                    checked={checked === value}
+                                    checked={session.lastFilter === value}
                                     tabIndex={-1}
                                     disableRipple
                                     inputProps={{ 'aria-labelledby': labelId }}

@@ -6,9 +6,9 @@ import { CssBaseline, ThemeProvider } from '@mui/material'
 import theme from './theme'
 import ErrorPage from './routes/ErrorPage'
 import HomePage from './routes/HomePage'
-import ProductsPage, { loader as productsLoader } from './routes/ProductsPage'
 import ProductDetailsPage, { loader as productDetailsLoader } from './routes/ProductDetailsPage'
 import BasketPage from './routes/BasketPage'
+import ProductsPage from './routes/ProductsPage'
 
 // The router to specify our routes
 const router = createBrowserRouter([
@@ -36,14 +36,8 @@ const router = createBrowserRouter([
                 loader: productDetailsLoader,
             },
             {
-                path: "/products/filter/:category",
-                element: <ProductsPage />,
-                loader: productsLoader,
-            },
-            {
                 path: "/products",
                 element: <ProductsPage />,
-                loader: productsLoader,
             },
             {
                 path: "/basket",

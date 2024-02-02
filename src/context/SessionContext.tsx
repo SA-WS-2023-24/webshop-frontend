@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useState } from "react"
-import { doGetProductsRequest, doSearchProductRequest, getBasketRequest, postProductToBasketRequest, postRemoveProductFromBasketRequest } from "../helper/requests"
+import { doGetProductsFromCategoryRequest, doGetProductsRequest, doGetUserProfileRequest, doSearchProductRequest, getBasketRequest, postProductToBasketRequest, postRemoveProductFromBasketRequest } from "../helper/requests"
 import { v4 as uuidv4 } from 'uuid'
 import { Basket } from "../routes/BasketPage"
 import { Product } from "../routes/ProductsPage"
@@ -10,19 +10,25 @@ interface SessionContextType {
     addToBasket: (productId: string) => void
     removeFromBasket: (productId: string) => void
     getProducts: () => void
-    searchProducts: (keyword: string) => void,
+    getProductsFromCategory: (category: string) => void
+    searchProducts: (keyword: string) => void
+    getUserProfile: () => void
     products: Product[]
+    lastFilter: string
     basket: Basket
 }
 
 export const SessionContext = createContext<SessionContextType>({
     getSessionId: () => { return "" },
-    updateBasket: () => {},
+    updateBasket: () => { },
     addToBasket: () => { },
     removeFromBasket: () => { },
     getProducts: () => { },
+    getProductsFromCategory: () => {},
     searchProducts: () => { },
+    getUserProfile: () => {},
     products: [],
+    lastFilter: "",
     basket: { basketId: "", freeShippingLimit: 0, totalCost: 0, items: [] }
 });
 
@@ -34,6 +40,7 @@ export default function SessionContextProvider({ children }: CustomerContextProv
     const sessionIdIdentifier: string = "sessionId";
     const [basket, setBasket] = useState<Basket>({ basketId: "", freeShippingLimit: 0, totalCost: 0, items: [] });
     const [products, setProducts] = useState<Product[]>([])
+    const [lastFilter, setLastFilter] = useState<string>("")
 
     function getSessionId(): string {
         if (sessionStorage.getItem(sessionIdIdentifier) === null) {
@@ -60,8 +67,20 @@ export default function SessionContextProvider({ children }: CustomerContextProv
         const response = await doGetProductsRequest()
         if (response.data !== null && response.error === null) {
             setProducts(response.data)
+            setLastFilter("")
         } else {
-            console.error(`ERROR while getting products by keyword\n: ${response.error}`)
+            console.error(`ERROR while getting all products\n: ${response.error}`)
+            setProducts([])
+        }
+    }
+
+    async function getProductsFromCategory(category: string) {
+        const response = await doGetProductsFromCategoryRequest(category.toLowerCase())
+        if (response.data !== null && response.error === null) {
+            setProducts(response.data)
+            setLastFilter(category)
+        } else {
+            console.error(`ERROR while getting products from category\n: ${response.error}`)
             setProducts([])
         }
     }
@@ -70,21 +89,20 @@ export default function SessionContextProvider({ children }: CustomerContextProv
         const delay = 50;
         setTimeout(() => {
             getBasketRequest(getSessionId())
-            .then(response => {
-                if (response.error === null && response.data !== null) {
-                    setBasket(response.data)
-                } else {
-                    console.error(`ERROR while getting the basket\n: ${response.error}`)
-                }
-            })
+                .then(response => {
+                    if (response.error === null && response.data !== null) {
+                        setBasket(response.data)
+                    } else {
+                        console.error(`ERROR while getting the basket\n: ${response.error}`)
+                    }
+                })
         }, delay)
     }
 
-    function addToBasket(productId: string) {
+    async function addToBasket(productId: string) {
         postProductToBasketRequest(getSessionId(), productId)
             .then(response => {
                 if (response.error === null) {
-                    
                     updateBasket()
                 } else {
                     console.error(`ERROR while adding product to basket\n: ${response.error}`)
@@ -92,7 +110,7 @@ export default function SessionContextProvider({ children }: CustomerContextProv
             })
     }
 
-    function removeFromBasket(productId: string) {
+    async function removeFromBasket(productId: string) {
         postRemoveProductFromBasketRequest(getSessionId(), productId)
             .then(response => {
                 if (response.error === null) {
@@ -104,6 +122,17 @@ export default function SessionContextProvider({ children }: CustomerContextProv
             })
     }
 
+    async function getUserProfile() {
+        doGetUserProfileRequest()
+        .then(response => {
+            if (response.error === null && response.data !== null) {
+                console.log(response.data)
+            } else {
+                console.error(`ERROR while getting user profile\n: ${response.error}`)
+            }
+        })
+    }
+
     return (
         <SessionContext.Provider value={{
             getSessionId,
@@ -111,8 +140,11 @@ export default function SessionContextProvider({ children }: CustomerContextProv
             addToBasket,
             removeFromBasket,
             getProducts,
+            getProductsFromCategory,
             searchProducts,
+            getUserProfile,
             products,
+            lastFilter,
             basket,
         }}>
             {children}

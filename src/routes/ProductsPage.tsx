@@ -1,11 +1,9 @@
 import { Box, Grid, Typography } from "@mui/material";
 import ProductCard from "../components/products/ProductCard";
-import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
 import FilterList from "../components/products/FilterList";
 import { VerticalBorderDivider } from "../components/main/Divider";
 import { useContext, useEffect } from "react";
 import { SessionContext } from "../context/SessionContext";
-//import { useEffect, useState } from "react";
 
 export interface Product {
 	id: string;
@@ -17,41 +15,16 @@ export interface Product {
 	rating: number;
 }
 
-async function requestAllProducts() {
-	const response = await fetch("http://192.168.49.2:30001/v1/products")
-		.then((response) => {
-			if (!response.ok) {
-				console.error("error occured!");
-			}
-			return response.json();
-		})
-		.then((data) => {
-			return {products: data, category: ""};
-		})
-		.catch((error) => {
-			console.error("error fetching products: ", error);
-		});
-	return response;
-}
-
-async function requestProductsFromCategory(category: string) {
-	return category;
-}
-
-export const loader = async ({ params }: LoaderFunctionArgs) => {
-	if(params.category === undefined) {
-		return requestAllProducts();
-	} else {
-		return requestProductsFromCategory(params.category)
-	}
-}
-
 export default function ProductsPage() {
 	const session = useContext(SessionContext)
-	const {category} = useLoaderData() as {category: string}
 
 	useEffect(() => {
-		session.getProducts()
+		if (session.lastFilter === "") {
+			session.getProducts()
+		} else {
+			session.getProductsFromCategory(session.lastFilter)
+		}
+		
 	}, [])
 
 	return (
@@ -70,7 +43,7 @@ export default function ProductsPage() {
 					fontWeight={800}
 					variant="h4"
 				>FILTER</Typography>
-				<FilterList selectedCategory={category}/>
+				<FilterList/>
 			</div>
 
 			<VerticalBorderDivider />
