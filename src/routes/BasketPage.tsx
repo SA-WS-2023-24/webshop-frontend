@@ -108,10 +108,10 @@ export default function BasketPage() {
 				</Box>
 			</Grid>
 			<VerticalBorderDivider />
-			<Grid item flexGrow={1}>
-				{session.basket.items.map((basketItem, index) => (
+			<Grid item flex={1} sx={{marginBottom: "10px"}}>
+				{session.basket.items.sort((a, b) => a.name.localeCompare(b.name)).map((basketItem) => (
 					<BasketItem
-						key={index}
+						key={basketItem.productId}
 						productId={basketItem.productId}
 						name={basketItem.name}
 						imgLink={basketItem.imgLink}

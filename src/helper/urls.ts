@@ -28,6 +28,10 @@ export function makeAddProductToBasketURL(basketId: string): string {
     return `http://${ip}:${productPort}/v1/basket/${basketId}/add-to-basket`
 }
 
+export function makeUpdateProductFromBasketURL(basketId: string): string {
+    return `http://${ip}:${productPort}/v1/basket/${basketId}/update-basket`
+}
+
 export function makeRemoveProductFromBasketURL(basketId: string): string {
     return `http://${ip}:${productPort}/v1/basket/${basketId}/remove-from-basket`
 }

@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useState } from "react"
-import { doGetProductsFromCategoryRequest, doGetProductsRequest, doGetUserProfileRequest, doSearchProductRequest, getBasketRequest, postProductToBasketRequest, postRemoveProductFromBasketRequest } from "../helper/requests"
+import { doGetProductsFromCategoryRequest, doGetProductsRequest, doGetUserProfileRequest, doSearchProductRequest, getBasketRequest, postProductToBasketRequest, postRemoveProductFromBasketRequest, updateProductFromBasketRequest } from "../helper/requests"
 import { v4 as uuidv4 } from 'uuid'
 import { Basket } from "../routes/BasketPage"
 import { Product } from "../routes/ProductsPage"
@@ -8,6 +8,7 @@ interface SessionContextType {
     getSessionId: () => string
     updateBasket: () => void
     addToBasket: (productId: string) => void
+    updateProductInBasket: (productId: string, quantity: number) => void
     removeFromBasket: (productId: string) => void
     getProducts: () => void
     getProductsFromCategory: (category: string) => void
@@ -22,6 +23,7 @@ export const SessionContext = createContext<SessionContextType>({
     getSessionId: () => { return "" },
     updateBasket: () => { },
     addToBasket: () => { },
+    updateProductInBasket: () => {},
     removeFromBasket: () => { },
     getProducts: () => { },
     getProductsFromCategory: () => {},
@@ -110,6 +112,17 @@ export default function SessionContextProvider({ children }: CustomerContextProv
             })
     }
 
+    async function updateProductInBasket(productId: string, quantity: number) {
+        updateProductFromBasketRequest(getSessionId(), productId, quantity)
+            .then(response => {
+                if (response.error === null) {
+                    updateBasket()
+                } else {
+                    console.error(`ERROR while adding product to basket\n: ${response.error}`)
+                }
+            })
+    }
+
     async function removeFromBasket(productId: string) {
         postRemoveProductFromBasketRequest(getSessionId(), productId)
             .then(response => {
@@ -138,6 +151,7 @@ export default function SessionContextProvider({ children }: CustomerContextProv
             getSessionId,
             updateBasket,
             addToBasket,
+            updateProductInBasket,
             removeFromBasket,
             getProducts,
             getProductsFromCategory,
