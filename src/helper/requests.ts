@@ -1,6 +1,6 @@
 import { Basket, BasketItem } from "../routes/BasketPage";
 import { Product } from "../routes/ProductsPage";
-import { makeAddProductToBasketURL, makeGetBasketItemsURL, makeGetBasketURL, makeGetProductsFromCategoryURL, makeGetProductsURL, makeGetUserProfileURL, makeRemoveProductFromBasketURL, makeSearchProductURL, makeUpdateProductFromBasketURL } from "./urls";
+import { makeAddProductToBasketURL, makeGetBasketItemsURL, makeGetBasketURL, makeGetProductsFromCategoryURL, makeGetProductsURL, makeGetUserProfileURL, makeGetUserSignInURL, makeRemoveProductFromBasketURL, makeSearchProductURL, makeUpdateProductFromBasketURL } from "./urls";
 
 interface PostProductToBasketRequestProps {
     data: null | {}
@@ -12,6 +12,7 @@ export function postProductToBasketRequest(basketId: string, productId: string):
     console.log(`posted product to basket with URL: ${url}`)
     const respone = fetch(url, {
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -56,6 +57,7 @@ export function updateProductFromBasketRequest(basketId: string, productId: stri
     console.log(`posted product to basket with URL: ${url}`)
     const respone = fetch(url, {
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -100,6 +102,7 @@ export function postRemoveProductFromBasketRequest(basketId: string, productId: 
     console.log(`posted remove product from basket with URL: ${url}`)
     const respone = fetch(url, {
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -318,19 +321,105 @@ export function doGetUserProfileRequest(): Promise<GetUserProfileRequestProps> {
     console.log(`fetchGetBasketURL: ${url}`)
     const response = fetch(url, {
         method: 'GET',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': 'localhost:3000',
         },
     })
         .then(response => {
             if (response.status === 404) {
                 throw new Error("No Data Found");
             }
-            if (response.status === 500) {
+            else if (response.status === 500) {
                 throw new Error("Server Error");
             }
-            if (!response.ok) {
+            else if (response.status === 401 || response.status === 403) {
+                window.location.href = "/login";
+            }
+            else if (!response.ok) {
+                throw new Error("Error Fetching Data");
+            }
+            return response.json()
+        })
+        .then(data => {
+            return { data: data, error: null }
+        })
+        .catch(err => {
+            console.log(`Got an error while fetching URL: ${url}: ${err}`)
+            return { data: null, error: err }
+        })
+    return response;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+interface SignInRequestProps {
+    username: string
+    password: string
+}
+
+export function doSignInRequest(username: string, password: string): Promise<SignInRequestProps> {
+    const url = makeGetUserSignInURL()
+    console.log(`fetchGetBasketURL: ${url}`)
+    const response = fetch(url, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            "email": username,
+            "password": password
+        })
+    })
+        .then(response => {
+            if (response.status === 404) {
+                throw new Error("No Data Found");
+            }
+            else if (response.status === 500) {
+                throw new Error("Server Error");
+            }
+            else if (response.status === 401) {
+                throw new Error("Unauthorized");
+            }
+            else if (!response.ok) {
+                throw new Error("Error Fetching Data");
+            }
+            return response.json()
+        })
+        .catch(err => {
+            console.log(`Got an error while fetching URL: ${url}: ${err}`)
+            return { username: "", password: "" }
+        })
+    return response;
+}
+
+
+interface GetCartIdProps {
+    data: null | string
+    error: null | Error
+}
+
+export function doGetCartIdRequest(): Promise<GetCartIdProps> {
+    const url = makeGetUserProfileURL()
+    console.log(`fetchGetBasketURL: ${url}`)
+    const response = fetch(url, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+        .then(response => {
+            if (response.status === 404) {
+                throw new Error("No Data Found");
+            }
+            else if (response.status === 500) {
+                throw new Error("Server Error");
+            }
+            else if (!response.ok) {
                 throw new Error("Error Fetching Data");
             }
             return response.json()

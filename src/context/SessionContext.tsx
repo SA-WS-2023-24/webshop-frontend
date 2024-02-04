@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useState } from "react"
-import { doGetProductsFromCategoryRequest, doGetProductsRequest, doGetUserProfileRequest, doSearchProductRequest, getBasketRequest, postProductToBasketRequest, postRemoveProductFromBasketRequest, updateProductFromBasketRequest } from "../helper/requests"
+import { doGetProductsFromCategoryRequest, doGetProductsRequest, doGetUserProfileRequest, doSearchProductRequest, getBasketRequest, postProductToBasketRequest, postRemoveProductFromBasketRequest, updateProductFromBasketRequest, doSignInRequest } from "../helper/requests"
 import { v4 as uuidv4 } from 'uuid'
 import { Basket } from "../routes/BasketPage"
 import { Product } from "../routes/ProductsPage"

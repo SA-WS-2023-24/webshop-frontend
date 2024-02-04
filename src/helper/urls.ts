@@ -1,7 +1,9 @@
-const ip = "192.168.49.2"
+// const ip = "192.168.49.2"
+const ip = "localhost"
 const productPort = 30001
 const basketPort = 30003
-const userPort = 30006
+// const userPort = 30006
+const userPort = 8081
 
 
 export function makeGetProductsURL() {
@@ -42,4 +44,12 @@ export function makeGetBasketItemsURL(basketId: string): string {
 
 export function makeGetUserProfileURL() {
     return `http://${ip}:${userPort}/v1/user/profile`
+}
+
+export function makeGetUserSignInURL() {
+    return `http://${ip}:${userPort}/v1/user/login`
+}
+
+export function makeGetCartIdURL() {
+    return `http://${ip}:${basketPort}/v1/cart`
 }

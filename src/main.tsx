@@ -9,6 +9,8 @@ import HomePage from './routes/HomePage'
 import ProductDetailsPage, { loader as productDetailsLoader } from './routes/ProductDetailsPage'
 import BasketPage from './routes/BasketPage'
 import ProductsPage from './routes/ProductsPage'
+import { Login } from '@mui/icons-material'
+import LoginPage from './routes/LoginPage'
 
 // The router to specify our routes
 const router = createBrowserRouter([
@@ -43,6 +45,10 @@ const router = createBrowserRouter([
                 path: "/basket",
                 element: <BasketPage />,
             },
+            {
+                path: "/login",
+                element: <LoginPage />,
+            }
         ]
     },
 ])
